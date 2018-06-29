@@ -2,8 +2,6 @@
 
 set -e
 
-envsubst < /rancher/rancher-compose.template.yml > /rancher/rancher-compose.yml
-envsubst < /rancher/docker-compose.template.yml > /rancher/docker-compose.yml
 rancher_env_vars="RANCHER_URL RANCHER_ACCESS_KEY RANCHER_SECRET_KEY RANCHER_ENVIRONMENT"
 
 missing_env_vars=0
@@ -18,6 +16,14 @@ done
 if [ $missing_env_vars != 0 ]; then
     exit 1
 fi
+
+templates="rancher-compose docker-compose"
+
+for template in $templates; do
+    if [ -f "${template}.template.yml" ]; then
+        envsubst < "${template}.template.yml" > "${template}.yml"
+    fi
+done
 
 set -- rancher-compose "$@"
 
