@@ -20,7 +20,8 @@ COPY rancher-entrypoint.sh /bin/rancher-entrypoint.sh
 RUN chmod +x /bin/rancher-entrypoint.sh
 
 RUN addgroup -S rancher \
-    && adduser -S -G rancher rancher
+    && adduser -S -G rancher rancher \
+    && chown rancher:rancher /rancher
 
 USER rancher
 
